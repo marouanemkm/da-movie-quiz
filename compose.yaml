@@ -1,5 +1,5 @@
 services:
-  php:
+  api:
     build:
       context: ./api
       target: frankenphp_dev
