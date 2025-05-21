@@ -1,0 +1,26 @@
+services:
+  php:
+    build:
+      context: ./api
+      target: frankenphp_dev
+    volumes:
+      - ./api:/app
+      - /app/var
+      - ./api/frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./api/frankenphp/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+    environment:
+      MERCURE_EXTRA_DIRECTIVES: demo
+      XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "443:443"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    tty: true
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped

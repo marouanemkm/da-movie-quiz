@@ -1,0 +1,53 @@
+{
+	{$CADDY_GLOBAL_OPTIONS}
+
+	frankenphp {
+		{$FRANKENPHP_CONFIG}
+	}
+}
+
+{$CADDY_EXTRA_CONFIG}
+
+{$SERVER_NAME:localhost} {
+	log {
+		format filter {
+			request>uri query {
+				replace authorization REDACTED
+			}
+		}
+	}
+
+	root * /app/public
+	encode zstd br gzip
+
+	# --- MERCURE désactivé ---
+	# mercure {
+	# 	transport_url {$MERCURE_TRANSPORT_URL:bolt:///data/mercure.db}
+	# 	publisher_jwt {env.MERCURE_PUBLISHER_JWT_KEY} {env.MERCURE_PUBLISHER_JWT_ALG}
+	# 	subscriber_jwt {env.MERCURE_SUBSCRIBER_JWT_KEY} {env.MERCURE_SUBSCRIBER_JWT_ALG}
+	# 	anonymous
+	# 	subscriptions
+	# 	{$MERCURE_EXTRA_DIRECTIVES}
+	# }
+
+	# --- VULCAIN désactivé ---
+	# vulcain
+
+	header ?Link `</docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"`
+	header ?Permissions-Policy "browsing-topics=()"
+
+	# --- PWA désactivée ---
+	# @pwa expression `(
+	# 		header({'Accept': '*text/html*'})
+	# 		&& !path(
+	# 			'/docs*', '/graphql*', '/bundles*', '/contexts*', '/_profiler*', '/_wdt*',
+	# 			'*.json*', '*.html', '*.csv', '*.yml', '*.yaml', '*.xml'
+	# 		)
+	# 	)
+	# 	|| path('/favicon.ico', '/manifest.json', '/robots.txt', '/sitemap*', '/_next*', '/__next*')
+	# 	|| query({'_rsc': '*'})`
+
+	# reverse_proxy @pwa http://{$PWA_UPSTREAM}
+
+	php_server
+}
