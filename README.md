@@ -14,6 +14,20 @@ This project is a simple API-based game where the user is asked to determine whe
 
 ## Getting Started
 
+### Environment Setup
+
+1. Copy the `.env.sample` file to create your local environment file:
+
+    ```bash
+    cp api/.env.sample api/.env
+    ```
+
+2. Edit `api/.env` and set your [TMDB API key](https://www.themoviedb.org/settings/api) in `TMDB_API_KEY`:
+
+    ```dotenv
+    TMDB_API_KEY=your_actual_tmdb_api_key_here
+    ```
+
 ### Prerequisites
 
 -   Docker
@@ -24,17 +38,25 @@ This project is a simple API-based game where the user is asked to determine whe
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-repo/movie-cast-game.git
-    cd movie-cast-game
+    git clone https://github.com/marouanemkm/da-movie-quiz.git
+    cd da-movie-quiz
     ```
 
-2. Launch the services:
+2. Build and start the services:
 
     ```bash
-    docker compose up --build
+    docker compose up -d --build
     ```
 
-    Wait until the message `FrankenPHP started` is displayed.
+3. Install PHP dependencies inside the container:
+
+    ```bash
+    docker compose exec php composer install
+    ```
+
+4. Access the API at:
+
+    - Swagger UI: [http://localhost/docs](http://localhost/docs)
 
 ### Available Services
 
