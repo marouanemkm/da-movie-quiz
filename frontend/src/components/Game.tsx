@@ -15,8 +15,8 @@ export default function Game() {
     try {
       const data = await fetchQuestion();
       setQuestion(data);
-    } catch (error) {
-      console.error("Error loading question:", error);
+    } catch (err) {
+      console.error("Error loading question:", err);
     } finally {
       setIsFetching(false);
     }
@@ -24,7 +24,6 @@ export default function Game() {
 
   const handleAnswer = async (answer: "yes" | "no") => {
     if (!question) return;
-
     setIsSubmitting(true);
     try {
       const res = await submitAnswer({ hash: question.hash, answer });
@@ -34,8 +33,8 @@ export default function Game() {
       } else {
         setGameOver(true);
       }
-    } catch (error) {
-      console.error("Error submitting answer:", error);
+    } catch (err) {
+      console.error("Error submitting answer:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -48,59 +47,97 @@ export default function Game() {
   };
 
   useEffect(() => {
-    loadQuestion();
+    void loadQuestion();
   }, []);
 
-  if (!question) return <div className="text-center mt-10">Chargement...</div>;
+  if (!question) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-slate-800 to-indigo-950">
+        <span className="text-white text-3xl font-semibold">Chargement…</span>
+      </div>
+    );
+  }
 
   if (gameOver) {
     return (
-      <div className="text-center mt-10">
-        <h1 className="text-2xl font-bold mb-4">Partie terminée</h1>
-        <p className="mb-6">Score : {score}</p>
-        <button
-          onClick={handleRestart}
-          className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700"
-        >
-          Rejouer
-        </button>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-slate-800 to-indigo-950 p-4">
+        <div className="bg-indigo-900/70 backdrop-blur-xl p-10 rounded-xl shadow-2xl text-center">
+          <h1 className="text-4xl font-bold text-white mb-4">Game Over</h1>
+          <p className="text-2xl text-white mb-8">
+            Score final : <span className="text-yellow-400">{score}</span>
+          </p>
+          <button
+            onClick={handleRestart}
+            className="bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white px-8 py-3 rounded-full transition-all shadow-md"
+          >
+            Rejouer
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="relative flex flex-col items-center mt-10 gap-6 min-h-[80vh]">
-      {/* Overlay loading during question fetch */}
+    <div className="min-h-screen bg-gradient-to-r from-slate-800 to-indigo-950 p-4 relative flex items-center justify-center">
       {isFetching && (
-        <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10 backdrop-blur-sm">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-white"></div>
         </div>
       )}
 
-      <div className="text-xl font-semibold">Score : {score}</div>
-      <div className="flex gap-8">
-        <ImageCard title={question.actor} imageUrl={question.actorImage} />
-        <ImageCard title={question.movie} imageUrl={question.movieImage} />
-      </div>
-      <div className="flex gap-4 mt-6">
-        {isSubmitting ? (
-          <div className="mt-4 animate-spin rounded-full h-10 w-10 border-t-4 border-gray-600"></div>
-        ) : (
-          <>
-            <button
-              onClick={() => handleAnswer("yes")}
-              className="bg-green-600 text-white px-6 py-3 rounded-xl text-lg hover:bg-green-700"
-            >
-              Oui
-            </button>
-            <button
-              onClick={() => handleAnswer("no")}
-              className="bg-red-600 text-white px-6 py-3 rounded-xl text-lg hover:bg-red-700"
-            >
-              Non
-            </button>
-          </>
-        )}
+      <div className="max-w-5xl w-full bg-indigo-900/70 backdrop-blur-xl rounded-xl shadow-xl p-8 space-y-8">
+        <h2 className="text-3xl font-semibold text-white text-center">
+          Score : {score}
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <a
+            href={question.actorImage || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-transform hover:scale-105"
+          >
+            <ImageCard
+              title={question.actor}
+              imageUrl={question.actorImage}
+              type="actor"
+            />
+          </a>
+
+          <a
+            href={question.movieImage || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-transform hover:scale-105"
+          >
+            <ImageCard
+              title={question.movie}
+              imageUrl={question.movieImage}
+              type="movie"
+            />
+          </a>
+        </div>
+
+        <div className="flex gap-6 justify-center">
+          {isSubmitting ? (
+            <div className="animate-spin h-12 w-12 border-t-4 border-yellow-400 rounded-full"></div>
+          ) : (
+            <>
+              <button
+                onClick={() => handleAnswer("yes")}
+                className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-8 py-3 rounded-full shadow-md transition-all"
+              >
+                Oui
+              </button>
+              <button
+                onClick={() => handleAnswer("no")}
+                className="bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white px-8 py-3 rounded-full shadow-md transition-all"
+              >
+                Non
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

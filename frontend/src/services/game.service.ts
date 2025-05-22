@@ -4,7 +4,7 @@ import type {
   SubmitAnswerResponse,
 } from "../types";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = "/api/game";
 
 export const fetchQuestion = async (): Promise<GameQuestion> => {
   const res = await fetch(`${API_BASE}/play`);

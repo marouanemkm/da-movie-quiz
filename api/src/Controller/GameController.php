@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GameController
 {
-    #[Route('/api/game/play', methods: ['GET'])]
+    #[Route('/api/game/play', methods: ['GET', 'OPTIONS'])]
     public function getQuestion(QuestionStore $store, TmdbService $tmdb): JsonResponse
     {
         $question = $tmdb->getRandomQuestion();
@@ -30,7 +30,7 @@ class GameController
         ]);
     }
 
-    #[Route('/api/game/play', methods: ['POST'])]
+    #[Route('/api/game/play', methods: ['POST', 'OPTIONS'])]
     public function submitAnswer(Request $request, QuestionStore $store): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -51,5 +51,11 @@ class GameController
         $store->delete($hash);
 
         return new JsonResponse(['correct' => $isCorrect]);
+    }
+
+    #[Route('/api/game/play', methods: ['OPTIONS'])]
+    public function options(): JsonResponse
+    {
+        return new JsonResponse(null, 204);
     }
 }
