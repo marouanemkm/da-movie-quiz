@@ -64,10 +64,10 @@ This project is a simple API-based game where the user is asked to determine whe
 
 ### Available Services
 
-| Service | Port   | Description              |
-| ------- | ------ | ------------------------ |
-| api     | 80/443 | Symfony API server       |
-| redis   | 6379   | Cache for game questions |
+| Service | Port | Description              |
+| ------- | ---- | ------------------------ |
+| api     | 80   | Symfony API server       |
+| redis   | 6379 | Cache for game questions |
 
 ## Frontend (React)
 
@@ -169,7 +169,3 @@ README.md
 ## License
 
 This project was developed as part of a technical assessment. All rights reserved.
-
-```
-
-```
