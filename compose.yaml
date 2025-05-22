@@ -2,7 +2,6 @@ services:
   api:
     build:
       context: ./api
-      target: frankenphp_dev
     volumes:
       - ./api:/app
       - /app/var

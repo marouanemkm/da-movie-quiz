@@ -1,3 +1,4 @@
+````markdown
 # Movie Cast Game - Technical Test
 
 ## Project Description
@@ -7,6 +8,7 @@ This project is a simple API-based game where the user is asked to determine whe
 ## Stack
 
 -   Symfony 7 with API Platform
+-   React + Vite + TypeScript + TailwindCSS
 -   Docker / Docker Compose
 -   Redis for temporary data storage
 -   TMDB (The Movie Database) API for retrieving movies and actors
@@ -21,6 +23,7 @@ This project is a simple API-based game where the user is asked to determine whe
     ```bash
     cp api/.env.sample api/.env
     ```
+````
 
 2. Edit `api/.env` and set your [TMDB API key](https://www.themoviedb.org/settings/api) in `TMDB_API_KEY`:
 
@@ -32,6 +35,9 @@ This project is a simple API-based game where the user is asked to determine whe
 
 -   Docker
 -   Docker Compose
+-   pnpm (for frontend)
+
+## Backend (API)
 
 ### Installation & Launch
 
@@ -42,7 +48,7 @@ This project is a simple API-based game where the user is asked to determine whe
     cd da-movie-quiz
     ```
 
-2. Build and start the services:
+2. Build and start the backend services:
 
     ```bash
     docker compose up -d --build
@@ -62,14 +68,38 @@ This project is a simple API-based game where the user is asked to determine whe
 
 | Service | Port   | Description              |
 | ------- | ------ | ------------------------ |
-| php     | 80/443 | Symfony API server       |
+| api     | 80/443 | Symfony API server       |
 | redis   | 6379   | Cache for game questions |
 
-## API Documentation
+## Frontend (React)
 
-Once the containers are up, access the documentation at:
+### Installation & Launch
 
--   Swagger UI: [http://localhost/docs](http://localhost/docs)
+1. Navigate to the frontend directory:
+
+    ```bash
+    cd frontend
+    ```
+
+2. Install dependencies:
+
+    ```bash
+    pnpm install
+    ```
+
+3. Start the development server:
+
+    ```bash
+    pnpm dev
+    ```
+
+4. The app will be available at:
+
+    ```
+    http://localhost:5173
+    ```
+
+Make sure the backend is running so the frontend can reach the API.
 
 ## API Endpoints
 
@@ -102,7 +132,7 @@ Response:
 }
 ```
 
-## Running Tests
+## Running Tests (Backend)
 
 Execute the following command inside the PHP container:
 
@@ -123,7 +153,11 @@ api/              # Symfony application
   config/
   tests/          # PHPUnit test files
   public/
-  ...
+frontend/         # React application
+  src/
+  components/
+  services/
+  types/
 docker-compose.yaml
 README.md
 ```
@@ -137,3 +171,7 @@ README.md
 ## License
 
 This project was developed as part of a technical assessment. All rights reserved.
+
+```
+
+```
