@@ -7,15 +7,17 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 class QuestionStore
 {
     private \Redis $redis;
+    private int $ttl;
 
     public function __construct(string $redisDsn)
     {
         $this->redis = RedisAdapter::createConnection($redisDsn);
+        $this->ttl = 604800; // 7 jours
     }
 
-    public function save(string $hash, string $answer, int $ttl = 300): void
+    public function save(string $hash, string $answer): void
     {
-        $this->redis->setex($hash, $ttl, $answer);
+        $this->redis->setex($hash, $this->ttl, $answer);
     }
 
     public function get(string $hash): ?string
