@@ -1,4 +1,3 @@
-````markdown
 # Movie Cast Game - Technical Test
 
 ## Project Description
@@ -23,7 +22,6 @@ This project is a simple API-based game where the user is asked to determine whe
     ```bash
     cp api/.env.sample api/.env
     ```
-````
 
 2. Edit `api/.env` and set your [TMDB API key](https://www.themoviedb.org/settings/api) in `TMDB_API_KEY`:
 
