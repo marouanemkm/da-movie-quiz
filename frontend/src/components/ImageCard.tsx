@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Props {
   title: string;
   imageUrl: string | null;
@@ -19,11 +17,11 @@ export default function ImageCard({
 
   return (
     <div className={`flex flex-col items-center ${className}`}>
-      <div className="w-full h-[450px] rounded-2xl overflow-hidden shadow-lg">
+      <div className="w-full h-[450px] bg-black rounded-2xl overflow-hidden shadow-lg flex items-center justify-center">
         <img
           src={finalUrl}
           alt={title}
-          className="w-full h-full object-cover object-top"
+          className="max-w-full max-h-full object-contain"
         />
       </div>
       <p className="mt-3 text-white text-center text-lg font-semibold truncate max-w-full">
