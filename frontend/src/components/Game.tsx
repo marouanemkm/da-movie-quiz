@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { fetchQuestion, submitAnswer } from "../services/game.service";
 import type { GameQuestion } from "../types";
 import QuestionPanel from "../components/QuestionPanel";
 import GameOverScreen from "../components/GameOverScreen";
 import ErrorPopup from "../components/ErrorPopup";
+import StartGame from "../components/StartGame";
 
 export default function Game() {
+  const [started, setStarted] = useState(false);
   const [question, setQuestion] = useState<GameQuestion | null>(null);
   const [score, setScore] = useState(0);
-  const [isFetching, setIsFetching] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +28,11 @@ export default function Game() {
     } finally {
       setIsFetching(false);
     }
+  };
+
+  const handleStart = () => {
+    setStarted(true);
+    loadQuestion();
   };
 
   const handleAnswer = async (answer: "yes" | "no") => {
@@ -56,9 +63,13 @@ export default function Game() {
     loadQuestion();
   };
 
-  useEffect(() => {
-    void loadQuestion();
-  }, []);
+  if (!started) {
+    return (
+      <div className="min-h-screen bg-gradient-to-r from-slate-800 to-indigo-950 p-4 flex items-center justify-center">
+        <StartGame onStart={handleStart} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-slate-800 to-indigo-950 p-4 relative flex items-center justify-center">
