@@ -17,13 +17,20 @@ This project is a simple API-based game where the user is asked to determine whe
 
 ### Environment Setup
 
-1. Copy the `.env.sample` file to create your local environment file:
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/marouanemkm/da-movie-quiz.git
+    cd da-movie-quiz
+    ```
+
+2. Copy the `.env.sample` file to create your local environment file:
 
     ```bash
     cp api/.env.sample api/.env
     ```
 
-2. Edit `api/.env` and set your [TMDB API key](https://www.themoviedb.org/settings/api) in `TMDB_API_KEY`:
+3. Edit `api/.env` and set your [TMDB API key](https://www.themoviedb.org/settings/api) in `TMDB_API_KEY`:
 
     ```dotenv
     TMDB_API_KEY=your_actual_tmdb_api_key_here
@@ -39,26 +46,15 @@ This project is a simple API-based game where the user is asked to determine whe
 
 ### Installation & Launch
 
-1. Clone the repository:
-
-    ```bash
-    git clone https://github.com/marouanemkm/da-movie-quiz.git
-    cd da-movie-quiz
-    ```
-
-2. Build and start the backend services:
+1. Build and start the backend services:
 
     ```bash
     docker compose up -d --build
     ```
 
-3. Install PHP dependencies inside the container:
+2. Wait and check that the dependency installation is complete in the container.
 
-    ```bash
-    docker compose exec php composer install
-    ```
-
-4. Access the API at:
+3. Access the API at:
 
     - Swagger UI: [http://localhost/docs](http://localhost/docs)
 
